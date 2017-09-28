@@ -112,10 +112,10 @@
 			"revisionTime": "2016-10-19T17:07:01Z"
 		},
 		{
-			"checksumSHA1": "m+ZCMSs5rIjG24mMKCj/zVP90fI=",
+			"checksumSHA1": "pHpOt5yU+Bin2V0DoGFXRpQC6Tg=",
 			"path": "github.com/hyperledger/fabric/bccsp",
-			"revision": "19a71f4c662596d6cc1b952c91a3e8c9b57fb85d",
-			"revisionTime": "2017-07-30T10:19:02Z",
+			"revision": "64b2e46e9c25cabf341cf0b4d4cced2d660fc441",
+			"revisionTime": "2017-09-28T01:40:21Z",
 			"tree": true
 		},
 		{
@@ -340,6 +340,18 @@
 			"path": "github.com/stretchr/tracer",
 			"revision": "66d3696bba973e1697f7d68413b3f19c6d6e2a7c",
 			"revisionTime": "2014-01-24T18:41:52Z"
+		},
+		{
+			"checksumSHA1": "jIvFlZbHlEpIksmj5ko/5KyZv2I=",
+			"path": "github.com/warm3snow/gmsm/sm2",
+			"revision": "86b2c6478305f01edd5ae83176a74447e82fb5eb",
+			"revisionTime": "2017-09-28T01:41:53Z"
+		},
+		{
+			"checksumSHA1": "6pl/XIoxdKVtqH/4eD9fqcUk9lQ=",
+			"path": "github.com/warm3snow/gmsm/x509",
+			"revision": "86b2c6478305f01edd5ae83176a74447e82fb5eb",
+			"revisionTime": "2017-09-28T01:41:53Z"
 		},
 		{
 			"checksumSHA1": "UWjVYmoHlIfHzVIskELHiJQtMOI=",

@@ -13,20 +13,25 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
-package utils
+package sansec
 
 import (
-	"crypto/x509"
+	"fmt"
 
-	gmx509 "github.com/warm3snow/gmsm/x509"
+	"github.com/hyperledger/fabric/bccsp"
 )
 
-// DERToX509Certificate converts der to x509
-func DERToX509Certificate(asn1Data []byte) (*x509.Certificate, error) {
-	return x509.ParseCertificate(asn1Data)
+//const RSAKeyLen = 32
+
+func (csp *impl) signRSA(k rsaPrivateKey, digest []byte, opts bccsp.SignerOpts) (signature []byte, err error) {
+	fmt.Printf("k.ski %v\n k.SKI() %v\n", k.ski, k.SKI())
+	sig, err := csp.signP11RSA(k.SKI(), digest)
+	if err != nil {
+		return nil, err
+	}
+	return sig, nil
 }
 
-func DERToGMx509Certificate(asn1Data []byte) (*gmx509.Certificate, error) {
-	return gmx509.ParseCertificate(asn1Data)
+func (csp *impl) verifyRSA(k rsaPublicKey, signature, digest []byte, opts bccsp.SignerOpts) (valid bool, err error) {
+	return csp.verifyP11RSA(k.ski, digest, signature)
 }

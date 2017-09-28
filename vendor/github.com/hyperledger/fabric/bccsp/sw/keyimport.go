@@ -27,7 +27,70 @@ import (
 
 	"github.com/hyperledger/fabric/bccsp"
 	"github.com/hyperledger/fabric/bccsp/utils"
+	"github.com/warm3snow/gmsm/sm2"
+	gmx509 "github.com/warm3snow/gmsm/x509"
 )
+
+type sm2PKIXPublicKeyImportOptsKeyImporter struct{}
+
+func (*sm2PKIXPublicKeyImportOptsKeyImporter) KeyImport(raw interface{}, opts bccsp.KeyImportOpts) (k bccsp.Key, err error) {
+	der, ok := raw.([]byte)
+	if !ok {
+		return nil, errors.New("Invalid raw material. Expected byte array.")
+	}
+
+	if len(der) == 0 {
+		return nil, errors.New("Invalid raw. It must not be nil.")
+	}
+
+	lowLevelKey, err := utils.DERToPublicKey(der)
+	if err != nil {
+		return nil, fmt.Errorf("Failed converting PKIX to sm2 public key [%s]", err)
+	}
+
+	sm2PK, ok := lowLevelKey.(*sm2.PublicKey)
+	if !ok {
+		return nil, errors.New("Failed casting to sm2 public key. Invalid raw material.")
+	}
+
+	return &sm2PublicKey{sm2PK}, nil
+}
+
+type sm2PrivateKeyImportOptsKeyImporter struct{}
+
+func (*sm2PrivateKeyImportOptsKeyImporter) KeyImport(raw interface{}, opts bccsp.KeyImportOpts) (k bccsp.Key, err error) {
+	der, ok := raw.([]byte)
+	if !ok {
+		return nil, errors.New("[SM2DERPrivateKeyImportOpts] Invalid raw material. Expected byte array.")
+	}
+
+	if len(der) == 0 {
+		return nil, errors.New("[SM2DERPrivateKeyImportOpts] Invalid raw. It must not be nil.")
+	}
+
+	lowLevelKey, err := utils.DERToPrivateKey(der)
+	if err != nil {
+		return nil, fmt.Errorf("Failed converting PKIX to sm2 public key [%s]", err)
+	}
+
+	sm2SK, ok := lowLevelKey.(*sm2.PrivateKey)
+	if !ok {
+		return nil, errors.New("Failed casting to sm2 private key. Invalid raw material.")
+	}
+
+	return &sm2PrivateKey{sm2SK}, nil
+}
+
+type sm2GoPublicKeyImportOptsKeyImporter struct{}
+
+func (*sm2GoPublicKeyImportOptsKeyImporter) KeyImport(raw interface{}, opts bccsp.KeyImportOpts) (k bccsp.Key, err error) {
+	lowLevelKey, ok := raw.(*sm2.PublicKey)
+	if !ok {
+		return nil, errors.New("Invalid raw material. Expected *sm2.PublicKey.")
+	}
+
+	return &sm2PublicKey{lowLevelKey}, nil
+}
 
 type aes256ImportKeyOptsKeyImporter struct{}
 
@@ -141,22 +204,35 @@ type x509PublicKeyImportOptsKeyImporter struct {
 
 func (ki *x509PublicKeyImportOptsKeyImporter) KeyImport(raw interface{}, opts bccsp.KeyImportOpts) (k bccsp.Key, err error) {
 	x509Cert, ok := raw.(*x509.Certificate)
-	if !ok {
-		return nil, errors.New("Invalid raw material. Expected *x509.Certificate.")
+	if ok {
+		pk := x509Cert.PublicKey
+		switch pk.(type) {
+		case *ecdsa.PublicKey:
+			return ki.bccsp.keyImporters[reflect.TypeOf(&bccsp.ECDSAGoPublicKeyImportOpts{})].KeyImport(
+				pk,
+				&bccsp.ECDSAGoPublicKeyImportOpts{Temporary: opts.Ephemeral()})
+		case *rsa.PublicKey:
+			return ki.bccsp.keyImporters[reflect.TypeOf(&bccsp.RSAGoPublicKeyImportOpts{})].KeyImport(
+				pk,
+				&bccsp.RSAGoPublicKeyImportOpts{Temporary: opts.Ephemeral()})
+		default:
+			return nil, errors.New("x509 Certificate's public key type not recognized. Supported keys: [ECDSA, RSA]")
+		}
+		//return nil, errors.New("Invalid raw material. Expected *x509.Certificate.")
 	}
+	//sm2 certificate
+	gmx509cert, ok := raw.(*gmx509.Certificate)
+	if ok {
+		sm2pk := gmx509cert.PublicKey
 
-	pk := x509Cert.PublicKey
-
-	switch pk.(type) {
-	case *ecdsa.PublicKey:
-		return ki.bccsp.keyImporters[reflect.TypeOf(&bccsp.ECDSAGoPublicKeyImportOpts{})].KeyImport(
-			pk,
-			&bccsp.ECDSAGoPublicKeyImportOpts{Temporary: opts.Ephemeral()})
-	case *rsa.PublicKey:
-		return ki.bccsp.keyImporters[reflect.TypeOf(&bccsp.RSAGoPublicKeyImportOpts{})].KeyImport(
-			pk,
-			&bccsp.RSAGoPublicKeyImportOpts{Temporary: opts.Ephemeral()})
-	default:
-		return nil, errors.New("Certificate's public key type not recognized. Supported keys: [ECDSA, RSA]")
+		switch sm2pk.(type) {
+		case *sm2.PublicKey:
+			return ki.bccsp.keyImporters[reflect.TypeOf(&bccsp.SM2GoPublicKeyImportOpts{})].KeyImport(
+				sm2pk.(*sm2.PublicKey),
+				&bccsp.SM2GoPublicKeyImportOpts{Temporary: opts.Ephemeral()})
+		default:
+			return nil, errors.New("gmx509 Certificate's public key type not recognized. Supported keys: [SM2]")
+		}
 	}
+	return nil, errors.New("Invalid raw material. Expected *x509.Certificate or *gmx509.Certificate.")
 }
