@@ -112,7 +112,7 @@
 			"revisionTime": "2016-10-19T17:07:01Z"
 		},
 		{
-			"checksumSHA1": "pHpOt5yU+Bin2V0DoGFXRpQC6Tg=",
+			"checksumSHA1": "qqTBubfnhvor+RT22SA7vNtviKM=",
 			"path": "github.com/hyperledger/fabric/bccsp",
 			"revision": "64b2e46e9c25cabf341cf0b4d4cced2d660fc441",
 			"revisionTime": "2017-09-28T01:40:21Z",
@@ -352,6 +352,12 @@
 			"path": "github.com/warm3snow/gmsm/x509",
 			"revision": "86b2c6478305f01edd5ae83176a74447e82fb5eb",
 			"revisionTime": "2017-09-28T01:41:53Z"
+		},
+		{
+			"checksumSHA1": "10nB0AIMvnGmlLSD/MRuK+eO3pA=",
+			"path": "github.com/warm3snow/pkcs11",
+			"revision": "b5ac27b08c5f3c36a0d012c09fdb547b51d4870f",
+			"revisionTime": "2017-09-12T01:39:45Z"
 		},
 		{
 			"checksumSHA1": "UWjVYmoHlIfHzVIskELHiJQtMOI=",

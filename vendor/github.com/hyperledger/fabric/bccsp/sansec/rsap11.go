@@ -24,7 +24,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/miekg/pkcs11"
+	"github.com/warm3snow/pkcs11"
 )
 
 func (csp *impl) pubParams(p11lib *pkcs11.Ctx, session pkcs11.SessionHandle, key pkcs11.ObjectHandle) (n, e []byte, err error) {
@@ -269,7 +269,7 @@ func (csp *impl) importRSAKey(privKey *rsa.PrivateKey, pubKey *rsa.PublicKey, ep
 			pkcs11.NewAttribute(pkcs11.CKA_DECRYPT, true),
 			pkcs11.NewAttribute(pkcs11.CKA_VERIFY, true),
 			/*key data*/
-			//refer to ~/miekg/bccsp_pkcs11/demo/RSATest.c #Line:169
+			//refer to ~/warm3snow/bccsp_pkcs11/demo/RSATest.c #Line:169
 			pkcs11.NewAttribute(pkcs11.CKA_MODULUS_BITS, keyLen),
 			pkcs11.NewAttribute(pkcs11.CKA_MODULUS, pModules),
 			pkcs11.NewAttribute(pkcs11.CKA_PUBLIC_EXPONENT, publicExponent),
@@ -306,7 +306,7 @@ func (csp *impl) importRSAKey(privKey *rsa.PrivateKey, pubKey *rsa.PublicKey, ep
 			pkcs11.NewAttribute(pkcs11.CKA_DECRYPT, true),
 			pkcs11.NewAttribute(pkcs11.CKA_VERIFY, true),
 			/*key data*/
-			//refer to ~/miekg/bccsp_pkcs11/demo/RSATest.c #Line:169
+			//refer to ~/warm3snow/bccsp_pkcs11/demo/RSATest.c #Line:169
 			pkcs11.NewAttribute(pkcs11.CKA_MODULUS_BITS, keyLen),
 			pkcs11.NewAttribute(pkcs11.CKA_MODULUS, pModules),
 			pkcs11.NewAttribute(pkcs11.CKA_PUBLIC_EXPONENT, publicExponent),

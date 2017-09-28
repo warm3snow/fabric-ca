@@ -33,7 +33,7 @@ import (
 	"github.com/hyperledger/fabric/bccsp/sw"
 	"github.com/hyperledger/fabric/bccsp/utils"
 	"github.com/hyperledger/fabric/common/flogging"
-	"github.com/miekg/pkcs11"
+	"github.com/warm3snow/pkcs11"
 	"github.com/warm3snow/gmsm/sm2"
 	"golang.org/x/crypto/sha3"
 )

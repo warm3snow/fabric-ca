@@ -6,7 +6,7 @@ import (
 	"math/big"
 	"sync"
 
-	"github.com/miekg/pkcs11"
+	"github.com/warm3snow/pkcs11"
 )
 
 func loadLib(lib, pin, label string) (*pkcs11.Ctx, uint, *pkcs11.SessionHandle, error) {

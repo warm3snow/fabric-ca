@@ -105,6 +105,9 @@ func TestKeyGenerate(t *testing.T) {
 	t.Run("10000", func(t *testing.T) { testKeyGenerate(t, &csr.BasicKeyRequest{A: "rsa", S: 10000}, true) })
 	t.Run("empty", func(t *testing.T) { testKeyGenerate(t, &csr.BasicKeyRequest{}, true) })
 	t.Run("nil", func(t *testing.T) { testKeyGenerate(t, nil, false) })
+
+	t.Run("256", func(t *testing.T) { testKeyGenerate(t, &csr.BasicKeyRequest{A: "sm2", S: 256}, false) }) //sm2 only support 256
+	t.Run("384", func(t *testing.T) { testKeyGenerate(t, &csr.BasicKeyRequest{A: "sm2", S: 384}, true) })
 }
 
 func testGetSignerFromCertFile(t *testing.T, keyFile, certFile string, mustFail int) {

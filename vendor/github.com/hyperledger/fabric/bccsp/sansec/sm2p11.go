@@ -24,7 +24,7 @@ import (
 	"math/big"
 	"strconv"
 
-	"github.com/miekg/pkcs11"
+	"github.com/warm3snow/pkcs11"
 	"github.com/warm3snow/gmsm/sm2"
 )
 

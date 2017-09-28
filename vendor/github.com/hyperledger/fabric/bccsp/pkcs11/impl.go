@@ -30,7 +30,7 @@ import (
 	"github.com/hyperledger/fabric/bccsp/sw"
 	"github.com/hyperledger/fabric/bccsp/utils"
 	"github.com/hyperledger/fabric/common/flogging"
-	"github.com/miekg/pkcs11"
+	"github.com/warm3snow/pkcs11"
 )
 
 var (

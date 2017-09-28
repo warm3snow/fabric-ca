@@ -24,7 +24,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/miekg/pkcs11"
+	"github.com/warm3snow/pkcs11"
 	"github.com/op/go-logging"
 )
 

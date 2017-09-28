@@ -23,7 +23,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/miekg/pkcs11"
+	"github.com/warm3snow/pkcs11"
 )
 
 // Look for an EC key by SKI, stored in CKA_ID
